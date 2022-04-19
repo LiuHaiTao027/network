@@ -1,0 +1,61 @@
+{
+  "name": "react_template",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@ant-design/pro-form": "^1.61.0",
+    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
+    "antd": "^4.19.3",
+    "axios": "^0.26.1",
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "js-cookie": "^3.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.2",
+    "mongoose": "^6.2.9",
+    "nanoid": "^3.3.2",
+    "pm2": "^5.2.0",
+    "pubsub-js": "^1.9.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.8",
+    "react-router-dom": "^5.3.0",
+    "react-scripts": "5.0.0",
+    "redux": "^4.1.2",
+    "redux-thunk": "^2.4.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "multiparty": "^4.2.3"
+  }
+}
