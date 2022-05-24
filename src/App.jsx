@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-// import { Redirect } from 'react-router-dom';
 import { Route, Switch } from "react-router-dom";
+// import { Redirect } from 'react-router-dom';
 // import { getUserInfo } from "@/store/actions";
 import './App.css'
 import Login from './pages/Login'
 
 import Home from './pages/Home'
+import UpdatePassword from './pages/Login/routes/UpdatePassword'
 
+import PrivateRoute from "./pages/Login/routes/PrivateRoute";
 
 class App extends Component {
 
@@ -15,9 +17,12 @@ class App extends Component {
             <div>
                 <Switch>
                     {/* <Login /> */}
-                    <Route path='/Home' component={Home}/>
+                    {/* <Route path='/Home' component={Home}/> */}
+                    <Route exact  path='/' component={Login} />
+                    <Route path={'updatePassword'} component={UpdatePassword}/>
 
-                    <Route path='/' component={Login} />
+                    <PrivateRoute  path={"/Home"} component={Home}/>
+
                 </Switch>
             </div>
         )

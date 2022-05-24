@@ -5,7 +5,7 @@ import { UploadOutlined } from '@ant-design/icons';
 
 const props = {
     name: 'file',
-    action: 'http://10.62.152.203:8000/text',
+    action: '/api/text',
     headers: {
         authorization: 'authorization-text',
     },

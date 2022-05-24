@@ -1,66 +1,19 @@
 import React, { Component } from 'react';
-import { Route, Switch} from "react-router-dom";
-// import TurnList from "./TurnList";
 import HomePath from "../../HomePath";
 import { Content } from "antd/es/layout/layout";
-import {Table, Select, Button} from "antd";
-import NewAbnormal from "./NewAbnormal";
-import NewTurnClass from "./NewTurnClass";
-// import TurnList from "./TurnList";
-import axios from "axios";
+import { Table, Select, Button, message } from "antd";
+
+
+// import NewTurnClass from "./NewTurnClass";
+
 const { Option } = Select;
 
 
-
 class NightShift extends Component {
-
-    saveFormData = (type)=>{
-        return (value)=>{
-            if (type === 'classType') {
-                const newData = [...this.state.data]
-                newData[0].classType = value
-                this.setState({data:newData})
-            }else if (type === 'handoverType'){
-                const newData = [...this.state.data]
-                newData[0].handoverType = value
-                // newData[0].key = 3
-                this.setState({data:newData})
-            }
-        }
-    }
-
-    onDisplayNone =()=>{
-        // this.setState({display:`${this.state.display==='block' ? 'none' : 'block'}`})
-        this.props.history.push({
-            pathname: '/Home/TurnList',
-        });
-        // console.log(this.props)
-    }
-
-    toNewAbnormal = ()=>{
-        this.props.history.push({
-            pathname: '/Home/NightShift/NewAbnormal',
-            state:{username:this.state.data[0].username,classType:this.state.data[0].classType}
-        })
-    }
-
-    async componentDidMount() {
-        try {
-            const result = await axios.post('/api/user')
-            const personInfo = result.data
-
-            const newData = [...this.state.data]
-            newData[0].username = personInfo[0].name
-            newData[0].key = 1
-            this.setState({data:newData})
-        }catch (err){
-            if (err) throw err
-        }
-    }
-
     state = {
         display: 'block',
-        data : [
+        isDisabled: false,
+        data: [
             {
                 key: 'data',
                 view: 'view',
@@ -70,16 +23,15 @@ class NightShift extends Component {
                 handoverType: '',
             }
         ],
-        columns : [
+        columns: [
             {
                 title: '',
                 dataIndex: 'view',
                 key: 'view',
-                align:'center',
+                align: 'center',
                 render: () => (
                     <span>
-                        {/*<Divider type="vertical" />*/}
-                        <Button onClick={this.onDisplayNone} style={{fontSize:16}} type="link">view</Button>
+                        <Button onClick={this.onDisplayNone} style={{ fontSize: 16 }} type="link">view</Button>
                     </span>
                 ),
             },
@@ -98,11 +50,11 @@ class NightShift extends Component {
                 dataIndex: 'classType',
                 key: 'classType',
                 width: 200,
-                render:()=>{
-                    return(
+                render: () => {
+                    return (
                         <Select
                             defaultValue="All"
-                            style={{width:'100%', height:'100%'}}
+                            style={{ width: '100%', height: '100%' }}
                             onChange={this.saveFormData('classType')}
                         >
                             <Option value='All'>All</Option>
@@ -117,13 +69,12 @@ class NightShift extends Component {
                 dataIndex: 'handoverType',
                 key: 'handoverType',
                 width: 200,
-                render:()=>{
-                    return(
+                render: () => {
+                    return (
                         <Select
                             defaultValue="All"
-                            style={{width:'100%', height:'100%'}}
+                            style={{ width: '100%', height: '100%' }}
                             onChange={this.saveFormData('handoverType')}
-                            // ref={c => this.handoverType = c}
                         >
                             <Option value='All'>All</Option>
                             <Option value="异常交接">异常交接</Option>
@@ -137,45 +88,89 @@ class NightShift extends Component {
                 dataIndex: 'NewClass',
                 key: 'NewClass',
                 render: () => {
-                    // console.log("record", record)
-                    // console.log('1',this.state.data[0])
-                    return(
+                    const { isDisabled } = this.state
+                    return (
                         <span>
-                        {/*<Divider type="vertical" />*/}
-                            <Button type={"primary"} onClick={this.toNewAbnormal} style={{fontSize:16}} >新增</Button>
-                            {/*<Link  to={{pathname:'/NightShift/NewAbnormal', state:{username:this.state.data[0].username,classType:this.state.data[0].classType}}} >新增</Link>*/}
+                            <Button disabled={isDisabled} type={"primary"} onClick={this.toNewAbnormal} style={{ fontSize: 16 }} >新增</Button>
                         </span>
                     )
                 },
             },
         ]
     }
+    saveFormData = (type) => {
+        return (value) => {
+            if (type === 'classType') {
+                const newData = [...this.state.data]
+                newData[0].classType = value
+                this.setState({ data: newData })
+            } else if (type === 'handoverType') {
+                const newData = [...this.state.data]
+                newData[0].handoverType = value
+                this.setState({ data: newData })
+            }
+        }
+    }
+
+    onDisplayNone = () => {
+        this.props.history.push({
+            pathname: '/Home/TurnList',
+        });
+    }
+
+    toNewAbnormal = () => {
+        if (this.state.data[0].classType === '' && this.state.data[0].handoverType === '') {
+            message.error('请选择班别类型与交接类型')
+        } else if (this.state.data[0].classType === '') {
+            message.error('请选择班别类型')
+        } else if (this.state.data[0].handoverType === '') {
+            message.error('请选择交接类型')
+        } else if (this.state.data[0].classType === 'All') {
+            message.warning('类型不能为All')
+        } else if (this.state.data[0].handoverType === 'All') {
+            message.warning('类型不能为All')
+        } else if(this.state.data[0].handoverType === '转班交接'){
+            this.setState({ isDisabled: true })
+            this.props.history.push({
+                pathname: '/Home/NewTurnClass',
+                // state: { username: this.state.data[0].username, classType: this.state.data[0].classType }
+            })
+        }
+        else {
+            this.setState({ isDisabled: true })
+            this.props.history.push({
+                pathname: '/Home/NewAbnormal',
+                state: { username: this.state.data[0].username, classType: this.state.data[0].classType }
+            })
+        }
+    }
+
+    async componentDidMount() {
+        const username = localStorage.getItem('username')
+        const newData = [...this.state.data]
+        newData[0].username = username
+        newData[0].key = 1
+        this.setState({ data: newData })
+    }
 
     render() {
-        // console.log(this.props)
-        // console.log(this.state.data[0].classType)
-        // console.log(this.state.data[0].handoverType)
-        // console.log(this.state.display)
-        // console.log(this.props.location)
-        // console.log('data',this.state.data[0])
-        const {columns, data} = this.state
+        const { columns, data } = this.state
         return (
             <Content style={{ margin: '0 16px' }}>
                 <HomePath />
                 <Table
-                    ref={c=>this.displayChange = c}
+                    ref={c => this.displayChange = c}
                     bordered
                     columns={columns}
                     dataSource={data}
                     pagination={{ position: [] }}
-                    style={{display:`${this.state.display}`}}
+                    style={{ display: `${this.state.display}` }}
                 />
 
-                <Switch>
-                    {/* <Route path="/NightShift/TurnList" component={TurnList} /> */}
+                {/* <Switch>
                     <Route path="/NightShift/NewTurnClass" component={NewTurnClass} />
                     <Route path="/Home/NightShift/NewAbnormal" component={NewAbnormal} />
-                </Switch>
+                </Switch> */}
             </Content>
         );
     }

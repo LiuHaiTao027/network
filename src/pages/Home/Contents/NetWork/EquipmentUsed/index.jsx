@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography, message, Button, Spin } from 'antd';
+import { Table, Input, Popconfirm, Form, Typography, message, Button, Spin, Select } from 'antd';
 import axios from 'axios';
 // import { Route} from "react-router-dom";
+const { Option } = Select;
 
 const originData = [];
 
@@ -15,7 +16,13 @@ const EditableCell = ({
     children,
     ...restProps
 }) => {
-    const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+    const inputNode = title === '是否需要转出' ?
+        <Select children={[<Option key='is' value='是'>是</Option>,<Option key='not' value='否'>否</Option>]} /> :
+        <Input /> 
+        && title === '是否已转出' ? 
+        <Select children={[<Option key='is' value='是'>是</Option>,<Option key='not' value='否'>否</Option>]} /> :
+        <Input />;
+        
     return (
         <td {...restProps}>
             {editing ? (
@@ -50,7 +57,7 @@ const EquipmentUsed = (props) => {
         const info = []
         try {
             setLoading(true)
-            const result = await axios.post('/api/ISP_Charge')
+            const result = await axios.post('/api/getEquipmentUsed')
             result.data.forEach((item) => {
                 info.push({ ...item, key: item._id })
             })
@@ -68,6 +75,7 @@ const EquipmentUsed = (props) => {
     const edit = (record) => {
         form.setFieldsValue({
             ...record,
+
         });
         setEditingKey(record.key);
     };
@@ -75,6 +83,7 @@ const EquipmentUsed = (props) => {
     const cancel = () => {
         setEditingKey('');
     };
+
 
     const save = async (key) => {
         try {
@@ -84,8 +93,9 @@ const EquipmentUsed = (props) => {
 
             if (index > -1) {
                 const item = newData[index];
+                item.editors = localStorage.getItem('username')
                 newData.splice(index, 1, { ...item, ...row });
-                const result = await axios.post('/api/updateISP_Charge', newData)
+                const result = await axios.post('/api/update_EquipmentUsed', newData)
                 if (result.data === 'OK') {
                     message.success('更新成功')
                     setData(newData);
@@ -100,7 +110,7 @@ const EquipmentUsed = (props) => {
             }
         } catch (errInfo) {
             message.error('请检查填写内容是否符合规范')
-            console.log('Validate Failed:', errInfo);
+            // console.log('Validate Failed:', errInfo);
         }
     };
     const columns = [
@@ -170,7 +180,7 @@ const EquipmentUsed = (props) => {
             title: '编辑者',
             dataIndex: 'editors',
             key: 'editors',
-            editable: true,
+            // editable: true,
         },
         {
             title: '备注',
@@ -197,7 +207,7 @@ const EquipmentUsed = (props) => {
                             Save
                         </Typography.Link>
                         <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                            <a>Cancel</a>
+                            <a href='/'>Cancel</a>
                         </Popconfirm>
                     </span>
                 ) : (
@@ -212,6 +222,17 @@ const EquipmentUsed = (props) => {
         props.history.push({
             pathname: '/Home/NewEquipmentUsed',
         })
+    }
+    const handleIsRoll_out = (record) => {
+        const newData = []
+        return () => {
+            record.forEach((obj) => {
+                if (obj.isRoll_out === '否') {
+                    newData.push(obj)
+                }
+            })
+            setData(newData)
+        }
     }
     const mergedColumns = columns.map((col) => {
         if (!col.editable) {
@@ -254,15 +275,20 @@ const EquipmentUsed = (props) => {
                     }}
                     title={(record) => {
                         let count1 = 0;
+                        let count2 = 0;
                         data.forEach((element) => {
-                            if (element.state === '完成') {
+                            if (element.isRoll_out === '否') {
                                 count1 += 1
-                            } 
+                            } if (element.isRoll_out === '是') {
+                                count2 += 1
+                            }
                         })
                         return (
                             <div>
                                 <span style={{ fontWeight: 'bold', fontSize: 16 }}>
-                                    设备待转出: <span style={{ color: 'red', textDecoration: 'underline' }}>{count1}</span>
+                                    设备已转出: <span style={{ color: 'green', textDecoration: 'underline' }}>{count2}</span>
+                                    &nbsp;&nbsp;
+                                    设备未转出: <span onClick={handleIsRoll_out(record)} style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }}>{count1}</span>
                                 </span>
                                 <Button onClick={NewISPCharge} type="primary" style={{ float: "right", marginRight: 20 }}>New</Button>
                             </div>

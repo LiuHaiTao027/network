@@ -36,9 +36,7 @@ export default class Header extends Component {
           </Menu.ItemGroup>
         </SubMenu>
         <Menu.Item key="alipay">
-          <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
             Navigation Four - Link
-          </a>
         </Menu.Item>
       </Menu>
     );

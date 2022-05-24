@@ -9,14 +9,9 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 
 ReactDOM.render(
-
-    // <ConfigProvider locale={zhCN}>
-    //     <Provider>
             <Router>
                 <App/>
             </Router>
-    //     </Provider>
-    // </ConfigProvider>
     , document.getElementById('root')
 );
 

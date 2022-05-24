@@ -1,0 +1,7 @@
+.logo {
+    display: flex;
+    width: 150px;
+    height: 31px;
+    margin: 16px 24px;
+    background: rgba(255, 255, 255, 0.888);
+  }
