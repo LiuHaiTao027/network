@@ -20,12 +20,20 @@ class NewTurnClass extends Component {
         console.log('Received values of form:', values);
     };
 
-    async componentDidMount() {
-        const { turnEffect, user } = this.state
-
-        const result = await axios.post('/addTurnEffect', turnEffect)
+    handlemail = ()=>{
         
-        // const usermail = await axios.post('/usermail', user)
+    }
+
+    async componentDidMount() {
+        const newUser = []
+
+        const result = await axios.post('/api/username')
+        
+        result.data.forEach(element => {
+            newUser.push({...element})
+        });
+
+        this.setState({user:newUser})
 
     }
 
@@ -85,6 +93,7 @@ class NewTurnClass extends Component {
                                                 ]}
                                             >
                                                 <Select
+                                                onBlur={this.handlemail}
                                                 >
                                                     {user.map((item)=>{
                                                         return (
@@ -92,6 +101,11 @@ class NewTurnClass extends Component {
                                                         )
                                                     })}
                                                 </Select>
+                                            </Form.Item>
+                                        </Col>
+                                        <Col>
+                                            <Form.Item>
+                                                {this.state.mail}
                                             </Form.Item>
                                         </Col>
                                         <MinusCircleOutlined onClick={() => remove(name)} />
