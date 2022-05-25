@@ -29,7 +29,6 @@ const EditableCell = ({
     // && title === '是否已转出' ?
     // <Select children={[<Option key='is' value='是'>是</Option>, <Option key='not' value='否'>否</Option>]} /> :
     // <Input />;
-
     return (
         <td {...restProps}>
             {editing ? (
@@ -194,17 +193,61 @@ const EquipmentUsed = (props) => {
         //     key: 'isRoll',
         //     editable: true,
         // },
-        {
-            title: '设备异动状态',
-            dataIndex: 'isRoll_out',
-            key: 'isRoll_out',
-            editable: true,
-        },
+        // <Option key='需转出-已转'>需转出-已转</Option>,
+        // <Option key='需转出-未转'>需转出-未转</Option>,
+        // <Option key='无需转出'>无需转出</Option>,
+        // <Option key='新购无财编'>新购无财编</Option>,
+        // <Option key='新购有财编'>新购有财编</Option>,
+
         {
             title: '编辑者',
             dataIndex: 'editors',
             key: 'editors',
             // editable: true,
+        },
+        {
+            title: '设备异动状态',
+            dataIndex: 'isRoll_out',
+            key: 'isRoll_out',
+            editable: true,
+            fixed: 'right',
+            filters: [
+                {
+                    text: '需转出-已转',
+                    value: '需转出-已转'
+                },
+                {
+                    text: '需转出-未转',
+                    value: '需转出-未转'
+                },
+                {
+                    text: '无需转出',
+                    value: '无需转出'
+                },
+                {
+                    text: '新购有财编',
+                    value: '新购有财编'
+                },
+                {
+                    text: '新购无财编',
+                    value: '新购无财编'
+                },
+            ],
+            onFilter(value, record) {
+                if (value === '需转出-已转') {
+                    return record.isRoll_out === '需转出-已转'
+                } else if (value === '需转出-未转') {
+                    return record.isRoll_out === '需转出-未转'
+                } else if (value === '无需转出') {
+                    return record.isRoll_out === '无需转出'
+                } else if (value === '新购有财编') {
+                    return record.isRoll_out === '新购有财编'
+                } else if (value === '新购无财编') {
+                    return record.isRoll_out === '新购无财编'
+                }
+                console.log('value', value);
+                console.log('record', record);
+            },
         },
         {
             title: '备注',
@@ -326,30 +369,19 @@ const EquipmentUsed = (props) => {
                         let count1 = 0;
                         let count2 = 0;
                         data.forEach((element) => {
-                            if (element.isRoll_out === '否') {
-                                count1 += 1
-                            } if (element.isRoll_out === '是') {
+                            if (element.isRoll_out === '需转出-已转') {
                                 count2 += 1
+                            } if (element.isRoll_out === '需转出-未转') {
+                                count1 += 1
                             }
                         })
                         return (
-                            <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                                 <span style={{ fontWeight: 'bold', fontSize: 16 }}>
                                     设备已转出: <span style={{ color: 'green', textDecoration: 'underline' }}>{count2}</span>
                                     &nbsp;&nbsp;
                                     设备未转出: <span onClick={handleIsRoll_out(record)} style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }}>{count1}</span>
                                 </span>
-
-                                <Button onClick={NewISPCharge} type="primary" style={{ float: "right", marginRight: 20 }}>New</Button>
-                                <Search
-                                    style={{ float: "right", width: 300, marginRight: 20 }}
-                                    placeholder="IP查询"
-                                    enterButton="Search"
-                                    size="middle"
-                                    allowClear
-                                    loading={searchLoadinga}
-                                    onSearch={onSearchIP}
-                                />
                                 <Search
                                     style={{ float: "right", width: 300, marginRight: 20 }}
                                     placeholder="财编查询"
@@ -359,6 +391,17 @@ const EquipmentUsed = (props) => {
                                     loading={searchLoadingb}
                                     onSearch={onSearch}
                                 />
+                                <Search
+                                    style={{ float: "right", width: 300, marginRight: 20 }}
+                                    placeholder="IP查询"
+                                    enterButton="Search"
+                                    size="middle"
+                                    allowClear
+                                    loading={searchLoadinga}
+                                    onSearch={onSearchIP}
+                                />
+
+                                <Button onClick={NewISPCharge} type="primary" style={{ float: "right", marginRight: 20 }}>New</Button>
                             </div>
                         )
                     }}
