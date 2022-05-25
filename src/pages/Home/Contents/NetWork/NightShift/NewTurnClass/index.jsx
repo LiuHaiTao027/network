@@ -14,21 +14,21 @@ class NewTurnClass extends Component {
         user: [],
         turnEffect: [],
         userMail: '',
+        effectObj: {}
     }
 
     onFinish = (values) => {
-        console.log('Received values of form:', values);
+        // effectObj.
+        console.log(values);
+
     };
 
-    handlemail = () => {
-        return (a, b) => {
-            const { user } = this.state
-            user.forEach((userItem) => {
-                if (userItem.name === b.children) {
-                    this.setState({ userMail: userItem.email })
-                }
-            })
-        }
+    handlemail = (key, userArr) => {
+        const {turnEffect} = this.state
+        userArr.forEach((item)=>{
+            turnEffect.push({...item})
+        })
+        this.setState({turnEffect})
     }
 
     async componentDidMount() {
@@ -45,13 +45,14 @@ class NewTurnClass extends Component {
     }
 
     render() {
+        console.log(this.turnEffect);
         const { user } = this.state
         return (
             <QueueAnim className="queue-simple">
                 <Form name="dynamic_form_nest_item" onFinish={this.onFinish} autoComplete="off" style={{ padding: 15, marginTop: 30, background: '#fff' }}>
                     <Title style={{ paddingTop: 20, marginLeft: 20 }} level={3}>转班交接</Title>
                     <Divider />
-                    <Form.List name="users" >
+                    <Form.List name="effects" >
                         {(fields, { add, remove }) => (
                             <>
                                 {fields.map(({ key, name, ...restField }) => (
@@ -63,16 +64,15 @@ class NewTurnClass extends Component {
                                         }}
                                         align="baseline"
                                     >
-                                        <Row style={{display:'inlineBlock'}}>
-                                            <Col style={{marginRight:20}}>
+                                        <Row style={{ display: 'inlineBlock' }}>
+                                            <Col style={{ marginRight: 20 }}>
                                                 <Form.Item
                                                     label='交接PIC'
-                                                    {...restField}
                                                 >
                                                     {localStorage.getItem('username')}
                                                 </Form.Item>
                                             </Col>
-                                            <Col style={{marginRight:20}}>
+                                            <Col style={{ marginRight: 20 }}>
                                                 <Form.Item
                                                     label='交接事件'
                                                     {...restField}
@@ -87,11 +87,10 @@ class NewTurnClass extends Component {
                                                     <Input placeholder="please input" />
                                                 </Form.Item>
                                             </Col>
-                                            <Col style={{marginRight:100}}>
+                                            <Col style={{ marginRight: 100 }}>
                                                 <Form.Item
                                                     style={{ width: 150 }}
                                                     label='PIC'
-                                                    {...restField}
                                                 >
                                                     <Select
                                                         mode="multiple"
@@ -100,8 +99,7 @@ class NewTurnClass extends Component {
                                                             width: 200,
                                                         }}
                                                         placeholder="Please select"
-                                                        // defaultValue={['a10', 'c12']}
-                                                        onChange={this.handlemail()}
+                                                        onChange={this.handlemail}
                                                     >
                                                         {user.map((item) => {
                                                             return (
@@ -111,20 +109,16 @@ class NewTurnClass extends Component {
                                                     </Select>
                                                 </Form.Item>
                                             </Col>
-                                            {/* <Col>
-                                            <Form.Item>
-                                                {this.state.mail}
-                                            </Form.Item>
-                                        </Col> */}
-                                            <Col style={{marginRight:20}}>
+                                            <Col style={{ marginRight: 20 }}>
                                                 <Form.Item
                                                     label='备注'
+                                                    name={[name, 'note']}
+                                                    {...restField}
                                                 >
                                                     <Input placeholder="please input" />
                                                 </Form.Item>
                                             </Col>
                                         </Row>
-
                                         <MinusCircleOutlined onClick={() => remove(name)} />
                                     </Space>
                                 ))}
