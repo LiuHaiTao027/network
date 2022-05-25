@@ -51,9 +51,6 @@ function UserManagement(props) {
         data.forEach((item) => {
             if (item.name === localStorage.getItem('username')) {
                 setCanEdit(false)
-                // if (item.permission !== 'admin') {
-                //     setPermission(true)
-                // }
             }
         })
 

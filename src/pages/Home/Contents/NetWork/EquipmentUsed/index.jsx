@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Input, Popconfirm, Form, Typography, message, Button, Spin, Select } from 'antd';
 import axios from 'axios';
+import _ from 'lodash'
 // import { Route} from "react-router-dom";
 const { Option } = Select;
 
 const originData = [];
-
+const { Search } = Input;
 const EditableCell = ({
     editing,
     dataIndex,
@@ -16,13 +17,19 @@ const EditableCell = ({
     children,
     ...restProps
 }) => {
-    const inputNode = title === '是否需要转出' ?
-        <Select children={[<Option key='is' value='是'>是</Option>,<Option key='not' value='否'>否</Option>]} /> :
-        <Input /> 
-        && title === '是否已转出' ? 
-        <Select children={[<Option key='is' value='是'>是</Option>,<Option key='not' value='否'>否</Option>]} /> :
-        <Input />;
-        
+    const inputNode = title === '设备异动状态' ?
+        <Select children={[
+            <Option key='需转出-已转'>需转出-已转</Option>,
+            <Option key='需转出-未转'>需转出-未转</Option>,
+            <Option key='无需转出'>无需转出</Option>,
+            <Option key='新购无财编'>新购无财编</Option>,
+            <Option key='新购有财编'>新购有财编</Option>,
+        ]} /> :
+        <Input />
+    // && title === '是否已转出' ?
+    // <Select children={[<Option key='is' value='是'>是</Option>, <Option key='not' value='否'>否</Option>]} /> :
+    // <Input />;
+
     return (
         <td {...restProps}>
             {editing ? (
@@ -51,7 +58,10 @@ const EquipmentUsed = (props) => {
     const [form] = Form.useForm();
     const [data, setData] = useState(originData);
     const [editingKey, setEditingKey] = useState('');
+    const [filiter, setFiliter] = useState(data)
     const [isLoading, setLoading] = useState(false)
+    const [searchLoadinga, setsearchLoadinga] = useState(false)
+    const [searchLoadingb, setsearchLoadingb] = useState(false)
     const isEditing = (record) => record.key === editingKey;
     const getInfo = async () => {
         const info = []
@@ -71,6 +81,16 @@ const EquipmentUsed = (props) => {
         getInfo()
     }, []);
 
+    useEffect(() => {
+        const getFiliter = () => {
+            const newFIliter = []
+            data.forEach((i) => {
+                newFIliter.push({ text: i.recorder, value: i.recorder })
+            })
+            setFiliter(_.uniqWith(newFIliter, _.isEqual))
+        }
+        getFiliter()
+    }, [data])
 
     const edit = (record) => {
         form.setFieldsValue({
@@ -145,6 +165,10 @@ const EquipmentUsed = (props) => {
             dataIndex: 'recorder',
             key: 'recorder',
             editable: true,
+            filters: [...filiter],
+            onFilter(value, record) {
+                if (value === record.recorder) return record.recorder
+            },
         },
         {
             title: '财编',
@@ -164,14 +188,14 @@ const EquipmentUsed = (props) => {
             key: 'model',
             editable: true,
         },
+        // {
+        //     title: '是否需要转出',
+        //     dataIndex: 'isRoll',
+        //     key: 'isRoll',
+        //     editable: true,
+        // },
         {
-            title: '是否需要转出',
-            dataIndex: 'isRoll',
-            key: 'isRoll',
-            editable: true,
-        },
-        {
-            title: '是否已转出',
+            title: '设备异动状态',
             dataIndex: 'isRoll_out',
             key: 'isRoll_out',
             editable: true,
@@ -234,6 +258,31 @@ const EquipmentUsed = (props) => {
             setData(newData)
         }
     }
+
+    const onSearch = async (value) => {
+        const selectInfo = []
+        setsearchLoadinga(true)
+        const fatchData = { tag: 'property', key: value }
+        const newData = await axios.post('/api/selectData', fatchData)
+        newData.data.forEach((item) => {
+            selectInfo.push({ ...item, key: item._id })
+        })
+        setData(selectInfo)
+        setsearchLoadinga(false)
+    }
+
+    const onSearchIP = async (value) => {
+        const selectInfo = []
+        setsearchLoadingb(true)
+        const fatchData = { tag: 'IP', key: value }
+        const newData = await axios.post('/api/selectData', fatchData)
+        newData.data.forEach((item) => {
+            selectInfo.push({ ...item, key: item._id })
+        })
+        setData(selectInfo)
+        setsearchLoadingb(false)
+    }
+
     const mergedColumns = columns.map((col) => {
         if (!col.editable) {
             return col;
@@ -290,7 +339,26 @@ const EquipmentUsed = (props) => {
                                     &nbsp;&nbsp;
                                     设备未转出: <span onClick={handleIsRoll_out(record)} style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }}>{count1}</span>
                                 </span>
+
                                 <Button onClick={NewISPCharge} type="primary" style={{ float: "right", marginRight: 20 }}>New</Button>
+                                <Search
+                                    style={{ float: "right", width: 300, marginRight: 20 }}
+                                    placeholder="IP查询"
+                                    enterButton="Search"
+                                    size="middle"
+                                    allowClear
+                                    loading={searchLoadinga}
+                                    onSearch={onSearchIP}
+                                />
+                                <Search
+                                    style={{ float: "right", width: 300, marginRight: 20 }}
+                                    placeholder="财编查询"
+                                    enterButton="Search"
+                                    size="middle"
+                                    allowClear
+                                    loading={searchLoadingb}
+                                    onSearch={onSearch}
+                                />
                             </div>
                         )
                     }}

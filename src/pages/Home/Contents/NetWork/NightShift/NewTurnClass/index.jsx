@@ -52,6 +52,7 @@ class NewTurnClass extends Component {
                 <Form name="dynamic_form_nest_item" onFinish={this.onFinish} autoComplete="off" style={{ padding: 15, marginTop: 30, background: '#fff' }}>
                     <Title style={{ paddingTop: 20, marginLeft: 20 }} level={3}>转班交接</Title>
                     <Divider />
+                     
                     <Form.List name="effects" >
                         {(fields, { add, remove }) => (
                             <>
