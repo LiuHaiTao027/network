@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Table, Input, Popconfirm, Form, Typography, message, Button, Spin, Select } from 'antd';
 import axios from 'axios';
 import _ from 'lodash'
-// import { Route} from "react-router-dom";
 const { Option } = Select;
 
 const originData = [];
@@ -26,9 +25,6 @@ const EditableCell = ({
             <Option key='新购有财编'>新购有财编</Option>,
         ]} /> :
         <Input />
-    // && title === '是否已转出' ?
-    // <Select children={[<Option key='is' value='是'>是</Option>, <Option key='not' value='否'>否</Option>]} /> :
-    // <Input />;
     return (
         <td {...restProps}>
             {editing ? (
@@ -136,14 +132,12 @@ const EquipmentUsed = (props) => {
         {
             title: '日期',
             dataIndex: 'date',
-            // key: 'year',
             editable: true,
             width: '6%'
         },
         {
             title: 'IP地址',
             dataIndex: 'IP',
-            // key: 'Operator',
             editable: true,
         },
         {
@@ -187,17 +181,6 @@ const EquipmentUsed = (props) => {
             key: 'model',
             editable: true,
         },
-        // {
-        //     title: '是否需要转出',
-        //     dataIndex: 'isRoll',
-        //     key: 'isRoll',
-        //     editable: true,
-        // },
-        // <Option key='需转出-已转'>需转出-已转</Option>,
-        // <Option key='需转出-未转'>需转出-未转</Option>,
-        // <Option key='无需转出'>无需转出</Option>,
-        // <Option key='新购无财编'>新购无财编</Option>,
-        // <Option key='新购有财编'>新购有财编</Option>,
 
         {
             title: '编辑者',
@@ -285,11 +268,13 @@ const EquipmentUsed = (props) => {
             },
         },
     ]
+
     const NewISPCharge = () => {
         props.history.push({
             pathname: '/Home/NewEquipmentUsed',
         })
     }
+
     const handleIsRoll_out = (record) => {
         const newData = []
         return () => {
@@ -334,7 +319,6 @@ const EquipmentUsed = (props) => {
             ...col,
             onCell: (record) => ({
                 record,
-                // inputType: col.dataIndex === 'age' ? 'number' : 'text',
                 dataIndex: col.dataIndex,
                 title: col.title,
                 editing: isEditing(record),
