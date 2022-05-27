@@ -24,7 +24,7 @@ function UserManagement(props) {
     const getUsers = async () => {
         const newOrigindata = []
         try {
-            const result = await axios.post('/api/usersInfo')
+            const result = await axios.post('http://10.62.22.249:8000/usersInfo')
             result.data.forEach((item) => {
                 newOrigindata.push({ ...item, key: item._id })
             })

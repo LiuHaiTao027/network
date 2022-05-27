@@ -91,9 +91,12 @@ export default class Siders extends Component {
                             <Link to='/Home/EquipmentUsed'>设备使用登记</Link>
                         </Menu.Item>
                         <Menu.Item key="13">
-                            <Link to='/Home/Architecture'>网络架构</Link>
+                            <Link to='/Home/ProcessTrack'>工程进度追踪</Link>
                         </Menu.Item>
                         <Menu.Item key="14">
+                            <Link to='/Home/Architecture'>网络架构</Link>
+                        </Menu.Item>
+                        <Menu.Item key="15">
                             <Link to='/Home/NetworkTools'>网络常用工具</Link>
                         </Menu.Item>
                     </SubMenu>

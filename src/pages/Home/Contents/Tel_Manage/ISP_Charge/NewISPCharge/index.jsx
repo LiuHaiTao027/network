@@ -54,7 +54,7 @@ export default class NewISPCharge extends Component {
         const { pic, Operator, Business_types, year, bandwidth, month, money, paragraph_type, Payment_method, invoice_dueTime, invoice_arrived, PR, PO, PA, state, note } = this.state
         const newInfo = { pic, Operator, Business_types, year, bandwidth, month, money, paragraph_type, Payment_method, invoice_dueTime, invoice_arrived, PR, PO, PA, state, note }
         try {
-            const result = await axios.post('/api/NewISPCharge', newInfo)
+            const result = await axios.post('http://10.62.22.249:8000/NewISPCharge', newInfo)
             console.log(await result.data);
             if (result.data === 'OK') {
                 message.success('数据增加成功')

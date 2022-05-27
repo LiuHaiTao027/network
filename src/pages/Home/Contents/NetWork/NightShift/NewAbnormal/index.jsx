@@ -41,7 +41,7 @@ export default class NewISPCharge extends Component {
     handleSubmit = async () => {
         const process_event = { ...this.state }
         try {
-            await axios.post('/api/newEvent', process_event)
+            await axios.post('http://10.62.22.249:8000/newEvent', process_event)
             message.success('发送成功')
             this.props.history.push({
                 pathname: '/Home/TurnList',

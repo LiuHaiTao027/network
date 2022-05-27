@@ -20,9 +20,9 @@ class Login extends Component {
       password: this.state.password
     }
     try {
-      const result = await axios.post('/api/login', user)
+      const result = await axios.post('http://10.62.22.249:8000/login', user)
       const nowToken = { token: result.data }
-
+      console.log(result);
       if (result.data === '账号密码错误') {
         message.warning(result.data)
       } 
@@ -31,38 +31,17 @@ class Login extends Component {
         message.warning('请修改初始密码')
         this.props.history.push("/updatePassword");
       }
-      else if (result.headers.token === undefined) {
+      else if (result.data === undefined) {
         message.error('账户认证失败，请联系管理员')
       }else{
         const info = await axios.post('/api/user', nowToken)
         // 将用户名写入localStorage中，这可以制作用户名显示在页面上的效果
         localStorage.setItem("username", info.data);
         // 将token写入
-        localStorage.setItem("token", result.headers.token);
+        localStorage.setItem("token", result.data);
         // 写入后进行页面跳转
         this.props.history.push("/home");
       }
-
-      // if (result.headers.token !== undefined) {
-      //   if (result.data === 'please reset your password') {
-      //     // 页面重定向至修改密码界面
-      //     this.props.history.push("/home");
-      //   }
-      //   else if (result.data === '账号密码错误') {
-      //     message.warning(result.data)
-      //   }
-      //   else {
-      //     const info = await axios.post('/api/user', nowToken)
-      //     // 将用户名写入localStorage中，这可以制作用户名显示在页面上的效果
-      //     localStorage.setItem("username", info.data);
-      //     // 将token写入
-      //     localStorage.setItem("token", result.headers.token);
-      //     // 写入后进行页面跳转
-      //     this.props.history.push("/home");
-      //   }
-      // } else {
-      //   message.error('账户不存在，请先注册再尝试进行登录')
-      // }
     } catch (error) {
       if (error) throw error
     }

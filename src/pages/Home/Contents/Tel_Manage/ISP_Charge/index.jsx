@@ -78,7 +78,7 @@ const EditableTable = (props) => {
         const info = []
         try {
             setLoading(true)
-            const result = await axios.post('/api/ISP_Charge')
+            const result = await axios.post('http://10.62.22.249:8000/ISP_Charge')
             result.data.forEach((item) => {
                 info.push({ ...item, key: item._id })
             })
@@ -112,7 +112,7 @@ const EditableTable = (props) => {
             if (index > -1) {
                 const item = newData[index];
                 newData.splice(index, 1, { ...item, ...row });
-                const result = await axios.post('/api/updateISP_Charge', newData)
+                const result = await axios.post('http://10.62.22.249:8000/updateISP_Charge', newData)
                 if (result.data === 'OK') {
                     message.success('更新成功')
                     setData(newData);

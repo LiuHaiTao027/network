@@ -21,6 +21,7 @@ import NewTurnClass from "./Contents/NetWork/NightShift/NewTurnClass"
 import Architecture from "./Contents/NetWork/Architecture";
 import TurnList from './Contents/NetWork/NightShift/TurnList'
 import EquipmentUsed from "./Contents/NetWork/EquipmentUsed";
+import ProcessTrack from "./Contents/NetWork/ProcessTrack";
 // telmenagement
 import ISP_Charge from './Contents/Tel_Manage/ISP_Charge'
 import NewISPCharge from './Contents/Tel_Manage/ISP_Charge/NewISPCharge'
@@ -39,12 +40,18 @@ export default class Home extends Component {
                     <Content style={{ margin: '0 16px' }}>
                         <Switch>
                             <Route path='/Home/users' component={UserManagement}/>
+
+
                             <Route path='/Home/NightShift' component={NightShift} />
                             <Route path="/Home/TurnList" component={TurnList} />
                             <Route path="/Home/NewAbnormal" component={NewAbnormal} />
                             <Route path='/Home/NewTurnClass' component={NewTurnClass} />
                             <Route path='/Home/EquipmentUsed' component={EquipmentUsed} />
                             <Route path="/Home/NewEquipmentUsed" component={NewEquipmentUsed} />
+
+
+                            <Route path="/Home/ProcessTrack" component={ProcessTrack} />
+
 
                             <Route path='/Home/Architecture' component={Architecture} />
                             <Route path="/Home/NetworkTools" component={NetworkTools} />

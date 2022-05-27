@@ -34,7 +34,7 @@ class NewTurnClass extends Component {
     async componentDidMount() {
         const newUser = []
 
-        const result = await axios.post('/api/username')
+        const result = await axios.post('http://10.62.22.249:8000/username')
 
         result.data.forEach(element => {
             newUser.push({ ...element })

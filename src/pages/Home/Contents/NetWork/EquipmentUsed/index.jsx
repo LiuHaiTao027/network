@@ -62,7 +62,7 @@ const EquipmentUsed = (props) => {
         const info = []
         try {
             setLoading(true)
-            const result = await axios.post('/api/getEquipmentUsed')
+            const result = await axios.post('http://10.62.22.249:8000/getEquipmentUsed')
             result.data.forEach((item) => {
                 info.push({ ...item, key: item._id })
             })
@@ -110,7 +110,7 @@ const EquipmentUsed = (props) => {
                 const item = newData[index];
                 item.editors = localStorage.getItem('username')
                 newData.splice(index, 1, { ...item, ...row });
-                const result = await axios.post('/api/update_EquipmentUsed', newData)
+                const result = await axios.post('/http://10.62.22.249:8000/update_EquipmentUsed', newData)
                 if (result.data === 'OK') {
                     message.success('更新成功')
                     setData(newData);
@@ -291,7 +291,7 @@ const EquipmentUsed = (props) => {
         const selectInfo = []
         setsearchLoadinga(true)
         const fatchData = { tag: 'property', key: value }
-        const newData = await axios.post('/api/selectData', fatchData)
+        const newData = await axios.post('http://10.62.22.249:8000/selectData', fatchData)
         newData.data.forEach((item) => {
             selectInfo.push({ ...item, key: item._id })
         })
@@ -303,7 +303,7 @@ const EquipmentUsed = (props) => {
         const selectInfo = []
         setsearchLoadingb(true)
         const fatchData = { tag: 'IP', key: value }
-        const newData = await axios.post('/api/selectData', fatchData)
+        const newData = await axios.post('http://10.62.22.249:8000/selectData', fatchData)
         newData.data.forEach((item) => {
             selectInfo.push({ ...item, key: item._id })
         })

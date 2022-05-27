@@ -33,7 +33,7 @@ const Architecture = () => {
   const onSelect = async (keys, info) => {
     console.log(Wrapper.current);
     try {
-      const result = await axios.post(`/api/${info.node.title}`)
+      const result = await axios.post(`http://10.62.22.249:8000/${info.node.title}`)
       setExhibit(result.data)
     } catch (error) {
 

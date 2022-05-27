@@ -25,7 +25,7 @@ export default class NewEquipmentUsed extends Component {
     }
     async componentDidMount() {
         try {
-            const result = await axios.post('/api/users')
+            const result = await axios.post('http://10.62.22.249:8000/users')
             const newUsers = this.state.users
             newUsers.push(...result.data)
             this.setState({ users: newUsers })
@@ -38,7 +38,7 @@ export default class NewEquipmentUsed extends Component {
         newInfo.editors = localStorage.getItem('username')
         if (newInfo.Use_location !== '' && newInfo.date !== '' && newInfo.recorder !== '') {
             try {
-                const result = await axios.post('/api/NewEquipmentUsed', newInfo)
+                const result = await axios.post('http://10.62.22.249:8000/NewEquipmentUsed', newInfo)
                 if (result.data === 'OK') {
                     message.success('数据增加成功')
                     this.props.history.push({

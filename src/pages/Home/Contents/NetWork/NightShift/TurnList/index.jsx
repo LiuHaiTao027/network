@@ -56,7 +56,7 @@ const TurnList = (props) => {
         const info = []
         try {
             setLoading(true)
-            const result = await axios.get('/api/event')
+            const result = await axios.get('http://10.62.22.249:8000/event')
             result.data.forEach((item, index) => {
                 info.push({ ...item, key: index })
             })
@@ -101,7 +101,7 @@ const TurnList = (props) => {
         const dutyName = { dutyName: newData[index].dutyDate }
         try {
             
-            const result = await axios.post('/api/Findtext', dutyName)
+            const result = await axios.post('http://10.62.22.249:8000/Findtext', dutyName)
             if (result.status >= 200 && result.status < 300) {
                 message.success('下载成功')
             }else{
@@ -124,7 +124,7 @@ const TurnList = (props) => {
             if (index > -1) {
                 const item = newData[index];
                 newData.splice(index, 1, { ...item, ...row });
-                const result = await axios.post('/api/update_Event', newData)
+                const result = await axios.post('http://10.62.22.249:8000/update_Event', newData)
                 if (result.data === 'OK') {
                     message.success('更新成功')
                     setData(newData);
