@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Popconfirm, Form, Typography, message, Spin, Select, Divider, Button } from 'antd';
+
+import { Table, Input, Popconfirm, Form, Typography, message, Spin, Select, Button } from 'antd';
 import axios from 'axios';
 import _ from 'lodash'
-import { DownloadOutlined } from '@ant-design/icons';
-// import { Route} from "react-router-dom";
 const { Option } = Select;
 
 const originData = [];
+
 
 const EditableCell = ({
     editing,
@@ -64,6 +64,75 @@ function ProcessTrack(props) {
     const [editingKey, setEditingKey] = useState('');
     const [isLoading, setLoading] = useState(false)
     const isEditing = (record) => record.key === editingKey;
+
+    const expandedRowRender = (record) => {
+        const columns = [
+          {
+            title: 'OA网点',
+            dataIndex: 'OA',
+            key: 'OA',
+          },
+          {
+            title: '网点移位',
+            dataIndex: 'stipple',
+            key: 'stipple',
+          },
+          {
+            title: 'TEL',
+            dataIndex: 'TEL',
+            key: 'TEL',
+          },
+          {
+            title: 'SFCS',
+            dataIndex: 'SFCS',
+            key: 'SFCS',
+          },
+          {
+            title: 'PT200',
+            dataIndex: 'PT200',
+            key: 'PT200',
+          },
+          {
+            title: 'I4.0',
+            dataIndex: 'I4',
+            key: 'I4.0',
+          },
+          {
+            title: 'Test小点',
+            dataIndex: 'Test',
+            key: 'Test小点',
+          },
+          {
+            title: 'UTP主干',
+            dataIndex: 'UTP',
+            key: 'UTP',
+          },
+          {
+            title: '1G光纤主干',
+            dataIndex: 'G_1',
+            key: '1G光纤主干',
+          },
+          {
+            title: '10G光纤主干',
+            dataIndex: 'G_10',
+            key: '10G光纤主干',
+          },
+
+        ];
+        const data = [{...record}];
+        // console.log(record);
+        // for (let i = 0; i < 1; ++i) {
+        //   data.push({
+        //     key: i,
+        //     date: '2014-12-24 23:12:00',
+        //     name: 'This is production name',
+        //     upgradeNum: 'Upgraded: 56',
+        //   });
+        // }
+    
+        return <Table columns={columns} dataSource={data} pagination={false} bordered />;
+      };
+
     const getInfo = async () => {
         const info = []
         try {
@@ -117,25 +186,6 @@ function ProcessTrack(props) {
         setEditingKey('');
     };
 
-    // const DownLoad = async (key) => {
-    //     const newData = [...data];
-    //     const index = newData.findIndex((item) => key === item.key);
-    //     const dutyName = { dutyName: newData[index].dutyDate }
-    //     try {
-    //         const result = await axios.post('http://10.62.22.249:8000/Findtext', dutyName)
-    //         if (result.status >= 200 && result.status < 300) {
-    //             message.success('下载成功')
-    //         } else {
-    //             message.error('no such file or directory')
-    //         }
-    //     } catch (error) {
-    //         if (error) {
-    //             message.error('no such file or directory')
-    //         }
-    //     }
-
-    // }
-
     const save = async (key) => {
         try {
             const row = await form.validateFields();
@@ -177,8 +227,8 @@ function ProcessTrack(props) {
             // key: 'HandoverDate',
         },
         {
-            title:'年份',
-            dataIndex:'year',
+            title: '年份',
+            dataIndex: 'year',
             width: 80,
             filters: [...yearFiliter],
             onFilter(value, record) {
@@ -428,13 +478,14 @@ function ProcessTrack(props) {
                     }}
                     scroll={{ x: 3000, y: 500 }}
                     expandable={{
-                        expandedRowRender: record =>
-                            <div style={{ margin: 0 }}>
-                                <p style={{ borderBottom: 'solid 1px black' }}>需求描述：{record.Requirement}</p>
-                                <p style={{ borderBottom: 'solid 1px black' }}>PO: {record.PO}</p>
-                                <p style={{ borderBottom: 'solid 1px black' }}>备注: {record.note}</p>
-                            </div>,
+                        // expandedRowRender: record =>
+                        //     <div style={{ margin: 0 }}>
+                        //         <p style={{ borderBottom: 'solid 1px black' }}>需求描述：{record.Requirement}</p>
+                        //         <p style={{ borderBottom: 'solid 1px black' }}>PO: {record.PO}</p>
+                        //         <p style={{ borderBottom: 'solid 1px black' }}>备注: {record.note}</p>
+                        //     </div>,
                         rowExpandable: record => record.event !== 'Not Expandable',
+                        expandedRowRender,
                     }}
                     title={(record) => {
                         let count1 = 0;
