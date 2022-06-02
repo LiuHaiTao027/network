@@ -7,30 +7,12 @@ import QueueAnim from 'rc-queue-anim'
 
 const { Title } = Typography;
 
-// const { Option } = Select;
 
 
 function NewTurnClass(props) {
-    // const [user, setUser] = useState()
-    // const [turnEffect, setTurnEffect] = useState()
-
-    // useEffect(() => {
-    //     const getUser = async () => {
-    //         const newUser = []
-
-    //         const result = await axios.post('http://10.62.22.249:8000/username')
-
-    //         result.data.forEach(element => {
-    //             newUser.push({ ...element })
-    //         });
-    //         setUser(newUser)
-    //     }
-    //     getUser()
-    // }, [])
 
     const onFinish = async (values) => {
-        // setTurnEffect(values)
-        // console.log(turnEffect);
+        const effectInfo = {}
         const result = await axios.post('http://10.62.22.249:8000/NewTurnClass', values)
         if (result.data === 'OK') {
             message.success('交接提交成功')
