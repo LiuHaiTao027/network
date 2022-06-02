@@ -14,6 +14,8 @@ import Footers from '../../components/Footers'
 import Siders from '../../components/Siders'
 // UserManagement
 import UserManagement from './Contents/UserManagement'
+// dailyTask
+import Budget from './Contents/DailyTask/Budget'
 // Network
 import NetworkTools from "./Contents/NetWork/NetworkTools";
 import NewAbnormal from "./Contents/NetWork/NightShift/NewAbnormal";
@@ -39,9 +41,13 @@ export default class Home extends Component {
                     <Headers />
                     <Content style={{ margin: '0 16px' }}>
                         <Switch>
+                            {/* 主页管理 */}
                             <Route path='/Home/users' component={UserManagement}/>
+                            {/* 日常管理 */}
+                            <Route path='/Home/Budget' component={Budget}/>
 
 
+                            {/* 网络管理 */}
                             <Route path='/Home/NightShift' component={NightShift} />
                             <Route path="/Home/TurnList" component={TurnList} />
                             <Route path="/Home/NewAbnormal" component={NewAbnormal} />
@@ -56,6 +62,7 @@ export default class Home extends Component {
                             <Route path='/Home/Architecture' component={Architecture} />
                             <Route path="/Home/NetworkTools" component={NetworkTools} />
 
+                            {/* 电话管理 */}
                             <Route path="/Home/ISP_Charge" component={ISP_Charge} />
                             <Route path="/Home/NewISPCharge" component={NewISPCharge} />
                             <Route path="/Home/Test" component={Test} />

@@ -47,9 +47,9 @@ export default class Siders extends Component {
                             <Link to='/Home/users'>用户管理</Link>
                         </Menu.Item>
                     </SubMenu>
-                    <SubMenu disabled={true} key="sub1" icon={<UnorderedListOutlined />} title="日常管理">
+                    <SubMenu disabled={false} key="sub1" icon={<UnorderedListOutlined />} title="日常管理">
                         <Menu.Item key="1">
-                            <Link to='/Budget'>预算管理</Link>
+                            <Link to='/Home/Budget'>预算管理</Link>
                         </Menu.Item>
                         <Menu.Item key="2">
                             <Link to='/EquipmentUsed'>PR管理</Link>

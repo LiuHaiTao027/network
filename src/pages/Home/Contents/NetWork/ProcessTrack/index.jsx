@@ -120,15 +120,6 @@ function ProcessTrack(props) {
 
         ];
         const data = [{...record}];
-        // console.log(record);
-        // for (let i = 0; i < 1; ++i) {
-        //   data.push({
-        //     key: i,
-        //     date: '2014-12-24 23:12:00',
-        //     name: 'This is production name',
-        //     upgradeNum: 'Upgraded: 56',
-        //   });
-        // }
     
         return <Table columns={columns} dataSource={data} pagination={false} bordered />;
       };
@@ -137,7 +128,8 @@ function ProcessTrack(props) {
         const info = []
         try {
             setLoading(true)
-            const result = await axios.post('http://10.62.22.249:8000/ProcessTrack')
+            const username = {name:localStorage.getItem('username')}
+            const result = await axios.post('http://10.62.22.249:8000/ProcessTrack', username)
             result.data.forEach((item, index) => {
                 info.push({ ...item, key: index })
             })
@@ -500,7 +492,7 @@ function ProcessTrack(props) {
                         return (
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <span style={{ fontWeight: 'bold', fontSize: 16 }}>
-                                    <span>工程进度追踪：</span>
+                                    <span>工程及零星點：</span>
                                     &nbsp;&nbsp;
                                     工程总数: <span style={{ color: 'green', textDecoration: 'underline', cursor: 'pointer' }}>{data.length}</span>
                                     &nbsp;&nbsp;

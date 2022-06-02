@@ -110,7 +110,7 @@ const EquipmentUsed = (props) => {
                 const item = newData[index];
                 item.editors = localStorage.getItem('username')
                 newData.splice(index, 1, { ...item, ...row });
-                const result = await axios.post('/http://10.62.22.249:8000/update_EquipmentUsed', newData)
+                const result = await axios.post('http://10.62.22.249:8000/update_EquipmentUsed', newData)
                 if (result.data === 'OK') {
                     message.success('更新成功')
                     setData(newData);

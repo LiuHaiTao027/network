@@ -28,7 +28,7 @@ const EditableCell = ({
                 title === 'pic' ?
                 <Select children={[
                     <Option key='roy_ye' value='roy_ye'>叶健</Option>,
-                    <Option key='Curtis_Liu' value='Curtis_Liu'>刘海涛</Option>,
+                    <Option key='Daniel_YJ_Zhou' value='Daniel_YJ_Zhou'>周永杰</Option>,
                 ]} /> : <Input />
                     &&
                     title === '付費方式' ?
