@@ -7,13 +7,12 @@ import QueueAnim from 'rc-queue-anim'
 
 const { Title } = Typography;
 
-
-
 function NewTurnClass(props) {
 
     const onFinish = async (values) => {
-        const effectInfo = {}
-        const result = await axios.post('http://10.62.22.249:8000/NewTurnClass', values)
+        const effectInfo = {...values,turnPic:localStorage.getItem('username')}
+        console.log(effectInfo);
+        const result = await axios.post('http://10.62.22.249:8000/NewTurnClass', effectInfo)
         if (result.data === 'OK') {
             message.success('交接提交成功')
         }
